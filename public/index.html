@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Grid Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .preview {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 6px;
+            border: 2px dashed #ddd;
+        }
+        
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .available-icons {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .icon-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .icon-tag {
+            background: #007bff;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Icon Grid Generator</h1>
+        
+        <div class="form-group">
+            <label for="icons">Icons (comma separated):</label>
+            <input type="text" id="icons" placeholder="e.g: AutoCAD,React,Vue,Angular" value="AutoCAD,React,Vue">
+        </div>
+        
+        <div class="form-group">
+            <label for="theme">Theme:</label>
+            <select id="theme">
+                <option value="Light">Light</option>
+                <option value="Dark">Dark</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="perline">Icons per line:</label>
+            <input type="number" id="perline" min="1" max="50" value="5">
+        </div>
+        
+        <button class="btn" onclick="generateGrid()">Generate Grid</button>
+        <button class="btn" onclick="loadAvailableIcons()" style="margin-left: 10px; background: #28a745;">View Available Icons</button>
+        
+        <div id="result" class="result" style="display: none;">
+            <h3>Result:</h3>
+            <div id="url-display"></div>
+            <div id="preview" class="preview"></div>
+        </div>
+        
+        <div id="available" class="available-icons" style="display: none;">
+            <h4>Available Icons:</h4>
+            <div id="icon-list" class="icon-list"></div>
+        </div>
+    </div>
+
+    <script>
+        async function generateGrid() {
+            const icons = document.getElementById('icons').value.trim();
+            const theme = document.getElementById('theme').value;
+            const perline = document.getElementById('perline').value;
+            
+            if (!icons) {
+                alert('Please specify at least one icon');
+                return;
+            }
+            
+            const params = new URLSearchParams({
+                i: icons,
+                t: theme,
+                perline: perline
+            });
+            
+            const url = `/api/svg?${params.toString()}`;
+            
+            try {
+                const response = await fetch(url);
+                const resultDiv = document.getElementById('result');
+                const urlDisplay = document.getElementById('url-display');
+                const preview = document.getElementById('preview');
+                
+                resultDiv.style.display = 'block';
+                
+                if (response.ok) {
+                    resultDiv.className = 'result';
+                    urlDisplay.innerHTML = `
+                        <strong>Generated URL:</strong><br>
+                        <code>${window.location.origin}${url}</code>
+                        <button onclick="copyUrl('${window.location.origin}${url}')" style="margin-left: 10px; padding: 2px 8px;">Copy</button>
+                    `;
+                    
+                    const svgText = await response.text();
+                    preview.innerHTML = svgText;
+                    
+                    const notFound = response.headers.get('X-Not-Found');
+                    if (notFound) {
+                        urlDisplay.innerHTML += `<br><br><strong>⚠️ Icons not found:</strong> ${notFound}`;
+                    }
+                } else {
+                    const error = await response.json();
+                    resultDiv.className = 'result error';
+                    urlDisplay.innerHTML = `<strong>Error:</strong> ${error.error}`;
+                    preview.innerHTML = '';
+                    
+                    if (error.available) {
+                        urlDisplay.innerHTML += `<br><br><strong>Available Icons:</strong><br>${error.available.join(', ')}`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating grid');
+            }
+        }
+        
+        async function loadAvailableIcons() {
+            try {
+                const response = await fetch('/api/icons');
+                const data = await response.json();
+                
+                const availableDiv = document.getElementById('available');
+                const iconList = document.getElementById('icon-list');
+                
+                availableDiv.style.display = 'block';
+                iconList.innerHTML = data.icons.map(icon => 
+                    `<span class="icon-tag">${icon}</span>`
+                ).join('');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading available icons');
+            }
+        }
+        
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+        
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateGrid();
+            }
+        });
+    </script>
+</body>
+</html>

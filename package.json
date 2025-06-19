@@ -1,0 +1,20 @@
+{
+  "name": "icon-grid-generator",
+  "version": "1.0.0",
+  "description": "Générateur de grilles d'icônes SVG",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step needed'",
+    "deploy": "vercel --prod",
+    "test": "node src/index.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "keywords": ["svg", "icons", "grid", "generator"],
+  "author": "Votre nom",
+  "license": "MIT"
+}
