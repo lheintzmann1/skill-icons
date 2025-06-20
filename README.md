@@ -41,7 +41,7 @@ Examples:
 - `React-Light.svg`, `React-Dark.svg`
 - `AutoCAD-Light.svg`, `AutoCAD-Dark.svg`
 
-## Parameters:
+## Parameters
 - `i` or `icons`: Comma-separated list of icons (**case-insensitive**)
 - `t` or `theme`: `Light` or `Dark` (default: Light)
 - `perline`: Number of icons per line (1-50, default: 15)
