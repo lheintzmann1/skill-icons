@@ -21,7 +21,7 @@ function getAvailableIcons() {
     files.forEach(file => {
       if (file.endsWith('.svg')) {
         const name = file.replace(/(-(?:Light|Dark))?\.svg$/, '');
-        icons.add(name.toLowerCase());
+        icons.add(name);
       }
     });
     
@@ -32,38 +32,37 @@ function getAvailableIcons() {
   }
 }
 
+function findIconFile(iconName, theme) {
+  try {
+    const files = fs.readdirSync(ICONS_DIR);
+    const targetPattern = new RegExp(`^${iconName}(-${theme})?\\.svg$`, 'i');
+
+    const matchingFile = files.find(file => targetPattern.test(file));
+    return matchingFile || null;
+  } catch (error) {
+    console.error(`Error finding icon file for ${iconName} with theme ${theme}:`, error);
+    return null;
+  }
+}
+
 function loadIcon(iconName, theme = 'Light') {
-  const normalizedTheme = theme.charAt(0).toUpperCase() + theme.slice(1).toLowerCase();
   const normalizedIconName = iconName.toLowerCase();
+  const normalizedTheme = theme.toLowerCase();
   const cacheKey = `${normalizedIconName}-${normalizedTheme}`;
   
   if (iconCache.has(cacheKey)) {
     return iconCache.get(cacheKey);
   }
+
+  const actualFilename = findIconFile(iconName, theme);
   
-  const suffixedFilename = `${normalizedIconName}-${normalizedTheme}.svg`;
-  const suffixedPath = path.join(ICONS_DIR, suffixedFilename);
+  if (!actualFilename) {
+    return null;
+  }
   
-  const plainFilename = `${normalizedIconName}.svg`;
-  const plainPath = path.join(ICONS_DIR, plainFilename);
+  const filepath = path.join(ICONS_DIR, actualFilename);
   
   try {
-    let filepath = null;
-    if (fs.existsSync(suffixedPath)) {
-      filepath = suffixedPath;
-    } else if (fs.existsSync(plainPath)) {
-      filepath = plainPath;
-    } else {
-      // Try with original case if lowercase didn't work
-      const files = fs.readdirSync(ICONS_DIR);
-      const matchingFile = files.find(file => file.toLowerCase() === suffixedFilename || file.toLowerCase() === plainFilename);
-      if (matchingFile) {
-        filepath = path.join(ICONS_DIR, matchingFile);
-      } else {
-        return null;
-      }
-    }
-    
     let svgContent = fs.readFileSync(filepath, 'utf8');
     
     svgContent = svgContent.replace(
@@ -126,8 +125,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No icons specified' });
     }
     
-    const theme = (url.searchParams.get('t') || url.searchParams.get('theme') || 'Light');
-    if (!['light', 'dark'].includes(theme.toLowerCase())) {
+    const theme = url.searchParams.get('t') || url.searchParams.get('theme') || 'Light';
+    if (!['Light', 'Dark'].includes(theme)) {
       return res.status(400).json({ error: 'Theme must be "Light" or "Dark"' });
     }
     
