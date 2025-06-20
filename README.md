@@ -1,7 +1,7 @@
 # skill-icons
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Live Demo](https://deploy-badge.vercel.app/vercel/skill-icons-two)](https://skill-icons-two.vercel.app)
+[![Live Demo](https://deploy-badge.vercel.app/vercel/skill-icons)](https://skillicons.vercel.app)
 
 ## Overview
 
@@ -12,7 +12,7 @@ All credits to [skill-icons](https://github.com/tandpfun/skill-icons) for the ic
 - Collection of SVG-based skill/technology icons
 - Easy to integrate into web projects
 - MIT Licensed and open-source
-- [Live demo available](https://skill-icons-two.vercel.app)
+- [Live demo available](https://skill-icons.vercel.app)
 
 ## Getting Started
 
@@ -21,15 +21,15 @@ All credits to [skill-icons](https://github.com/tandpfun/skill-icons) for the ic
 Example usage in HTML:
 
 ```html
-<img src="https://skill-icons-two.vercel.app/api/svg?i=react,vuejs,angular&t=Dark&perline=3" alt="Tech stack">
+<img src="https://skillicons.vercel.app/api/svg?i=react,vuejs,angular&t=Dark&perline=3" alt="Tech stack">
 ```
-<img src="https://skill-icons-two.vercel.app/api/svg?i=react,vuejs,angular&t=Dark&perline=3" alt="Tech stack">
+<img src="https://skillicons.vercel.app/api/svg?i=react,vuejs,angular&t=Dark&perline=3" alt="Tech stack">
 
 Example usage in Markdown:
 ```markdown
-![My tools](https://skill-icons-two.vercel.app/api/svg?i=autocad,photoshop,illustrator&t=Light&perline=5)
+![My tools](https://skillicons.vercel.app/api/svg?i=autocad,photoshop,illustrator&t=Light&perline=5)
 ```
-![My tools](https://skill-icons-two.vercel.app/api/svg?i=autocad,photoshop,illustrator&t=Light&perline=5)
+![My tools](https://skillicons.vercel.app/api/svg?i=autocad,photoshop,illustrator&t=Light&perline=5)
 
 ## Naming Convention
 
