@@ -126,8 +126,8 @@ export default async function handler(req, res) {
     }
     
     const theme = url.searchParams.get('t') || url.searchParams.get('theme') || 'Light';
-    theme = theme.toLowerCase();
-    if (!['light', 'dark'].includes(theme)) {
+    const normalizedTheme = theme.charAt(0).toUpperCase() + theme.slice(1).toLowerCase();
+    if (!['Light', 'Dark'].includes(normalizedTheme)) {
       return res.status(400).json({ error: 'Theme must be "Light" or "Dark"' });
     }
     
@@ -140,7 +140,7 @@ export default async function handler(req, res) {
     const notFound = [];
     
     for (const iconName of icons) {
-      const iconSvg = loadIcon(iconName, theme);
+      const iconSvg = loadIcon(iconName, normalizedTheme);
       if (iconSvg) {
         iconData.push(iconSvg);
       } else {
