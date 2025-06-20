@@ -43,7 +43,7 @@ Examples:
 
 ## Parameters
 - `i` or `icons`: Comma-separated list of icons (**case-insensitive**)
-- `t` or `theme`: `Light` or `Dark` (default: Light)
+- `t` or `theme`: `Light` or `Dark` (default: Light, **case-insensitive**)
 - `perline`: Number of icons per line (1-50, default: 15)
 
 ## Contributing
