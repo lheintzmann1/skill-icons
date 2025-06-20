@@ -126,7 +126,8 @@ export default async function handler(req, res) {
     }
     
     const theme = url.searchParams.get('t') || url.searchParams.get('theme') || 'Light';
-    if (!['Light', 'Dark'].includes(theme)) {
+    theme = theme.toLowerCase();
+    if (!['light', 'dark'].includes(theme)) {
       return res.status(400).json({ error: 'Theme must be "Light" or "Dark"' });
     }
     
