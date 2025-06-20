@@ -1,7 +1,7 @@
 # skill-icons
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Live Demo](https://deploy-badge.vercel.app/vercel/skill-icons)](https://skillicons.vercel.app)
+[![Live Demo](https://deploy-badge.vercel.app/vercel/skillicons)](https://skillicons.vercel.app)
 
 ## Overview
 
