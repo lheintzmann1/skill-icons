@@ -12,7 +12,7 @@ All credits to [skill-icons](https://github.com/tandpfun/skill-icons) for the ic
 - Collection of SVG-based skill/technology icons
 - Easy to integrate into web projects
 - MIT Licensed and open-source
-- [Live demo available](https://skill-icons.vercel.app)
+- [Live demo available](https://skillicons.vercel.app)
 
 ## Getting Started
 

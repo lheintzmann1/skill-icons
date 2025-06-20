@@ -1,7 +1,7 @@
 {
-  "name": "icon-grid-generator",
+  "name": "skillicons",
   "version": "1.0.0",
-  "description": "Générateur de grilles d'icônes SVG",
+  "description": "Showcase your skills with SVG icons",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
@@ -15,6 +15,6 @@
     "vercel": "^32.0.0"
   },
   "keywords": ["svg", "icons", "grid", "generator"],
-  "author": "Votre nom",
+  "author": "lheintzmann1",
   "license": "MIT"
 }
